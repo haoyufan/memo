@@ -49,7 +49,7 @@
     >
         <h3 class="title" :style="{background:v.color}">{{v.title}}</h3>
         <div class="clone" @click="clone(i)">X</div>
-        <textarea class="content" contenteditable="true"  @blur="save" v-model="v.content"></textarea>
+        <textarea class="content" contenteditable="true"  @keyup.stop="save" v-model="v.content"></textarea>
     </div>
 </main>
 </body>
