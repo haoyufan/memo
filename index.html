@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!-- 页面关键词 keywords -->
+    <meta name="keywords" content="keywords">
+    <!-- 页面描述内容 description -->
+    <meta name="description" content="description">
+    <!-- 定义网页作者 author -->
+    <meta name="author" content="author,email address">
+    <!--定义网页搜索引擎索引方式，none，noindex，nofollow，all，index和follow。-->
+    <meta name="robots" content="index,follow">
+
+    <meta name="description" content="complete attributes of css3">
+
+    <!-- Add to homescreen for Safari on Ios -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="css3">
+    <link rel="apple-touch-icon" href="src">
+
+    <!-- Add to homescreen for Chrome on Android -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="css3">
+    <meta name="theme-color" content="#2F3BA2">
+    <link rel="icon" sizes="192x192" href="src">
+    <!-- 添加 favicon icon -->
+    <link rel="shortcut icon" type="image/ico" href="/favicon.ico"/>
+    <!-- 静止缩放-->
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <title>Title</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+<header></header>
+<main class="content" id="app"
+      @dblclick.prevent="addNote"
+      @mouseover="mv"
+      @mouseup="mu"
+>
+    <div :class="`note ${i == moveInfo.index?'active':''}`" v-for="(v,i) in note"
+         :style="{top:v.top+'px',left:v.left+'px',borderColor:v.color}"
+         :key="v.id"
+         @mousedown.stop="md(i,$event)"
+    >
+        <h3 class="title" :style="{background:v.color}">{{v.title}}</h3>
+        <div class="clone" @click="clone(i)">X</div>
+        <textarea class="content" contenteditable="true"  @blur="save" v-model="v.content"></textarea>
+    </div>
+</main>
+</body>
+</html>
+<script src="vue.min.js"></script>
+<script src="index.js"></script>
