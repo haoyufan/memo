@@ -39,17 +39,17 @@
 <header></header>
 <main class="content" id="app"
       @dblclick.prevent="addNote"
-      @mouseover="mv"
-      @mouseup="mu"
 >
     <div :class="`note ${i == moveInfo.index?'active':''}`" v-for="(v,i) in note"
-         :style="{top:v.top+'px',left:v.left+'px',borderColor:v.color}"
+         :style="{top: v.y+'px',left: v.x+'px',borderColor: v.color}"
          :key="v.id"
          @mousedown.stop="md(i,$event)"
     >
-        <h3 class="title" :style="{background:v.color}">{{v.title}}</h3>
+        <h3 class="title" :style="{background:v.color}">
+            <input type="text" v-model="v.title" @blur="save(i)">
+        </h3>
         <div class="clone" @click="clone(i)">X</div>
-        <textarea class="content" contenteditable="true"  @blur="save" v-model="v.content"></textarea>
+        <textarea class="content" contenteditable="true"  @blur="save(i)" v-model="v.content"></textarea>
     </div>
 </main>
 </body>
