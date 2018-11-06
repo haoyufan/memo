@@ -55,6 +55,7 @@ main{
     right:0;
     text-align: center;
     line-height: 20px;
+<<<<<<< HEAD
 }
 
 .note .title input{
@@ -63,4 +64,6 @@ main{
     text-align: center;
     color: #fff;
     font-weight: bold;
+=======
+>>>>>>> 8ef41b70c7b1e8f47e8c6a328663dcb0240f6e21
 }
