@@ -17,7 +17,19 @@ router.post('/getList', async (ctx, next) => {
 
 router.post('/addCard', async (ctx, next) => {
   const body = ctx.body
-  await query('INSERT INTO memo(color, y, x) VALUES(?,?,?)', [body.color, body.top, body.left])
+  await query('INSERT INTO memo(color, y, x) VALUES(?,?,?)', [body.color, body.y, body.x]);
   await ctx.jsend(null, '操作成功')
 });
+
+router.post('/setCard', async (ctx, next) => {
+  const body = ctx.body;
+  await query('UPDATE memo SET title=?, content=?,y=?,x=? WHERE id=?', [body.title, body.content, body.y, body.x, body.id]);
+  await ctx.jsend(null, '修改成功')
+})
+
+router.post('/delCard', async ctx => {
+  const body = ctx.body;
+  await query('UPDATE memo set isDelete=1 WHERE id=?', [body.id])
+  await ctx.jsend(null, '删除成功')
+})
 module.exports = router;

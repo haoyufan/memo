@@ -4,20 +4,15 @@ const path = require('path')
 const views = require("koa-views")
 const logger = require("koa-logger")
 const statics = require('koa-static')
-<<<<<<< HEAD
 const convert = require('koa-convert');
 const json = require('koa-json');
 const bodyParser = require('koa-bodyparser')();
 const koaBody = require('koa-body');
 const cors = require('koa-cors');
-=======
->>>>>>> 8ef41b70c7b1e8f47e8c6a328663dcb0240f6e21
-
 const router = require("./routers")
 const app = new Koa()
 const port = 4050
 
-<<<<<<< HEAD
 const server = http.createServer(app.callback())
 
 app.use(convert.compose(
@@ -45,18 +40,8 @@ app.use(async function(ctx, next) {
 app.use(views(__dirname + '/',{extension: 'html'}))
 app.use(router.routes()).use(router.allowedMethods())
 app.use(statics(path.join( __dirname,  '/')))
-
-=======
-let server = http.createServer(app.callback())
-
 app.use(logger())
 
-console.log()
-app.use(statics(path.join( __dirname,  '/')))
-app.use(views(__dirname + '/',{extension: 'html'}))
-
-app.use(router.routes(), router.allowedMethods())
->>>>>>> 8ef41b70c7b1e8f47e8c6a328663dcb0240f6e21
 app.on("error", (err, ctx) => {
 	log.error('server error', err, ctx)
 })

@@ -12,7 +12,6 @@ function post(option) {
     .then(data => data.data)
 }
 
-let colors = ['#0795dd', '#ff9333', '#fff439', '#70ff38', '#fff4e0', '#53bdff'];
 let app = new Vue({
     el: '#app',
     data: {
@@ -21,8 +20,8 @@ let app = new Vue({
     },
     methods: {
       addNote: function (e) {
-        const color = colors[Math.floor(Math.random() * colors.length)],
-          y = e.clientY - 60 - 20,
+        const color = randomColor(),
+          y = e.clientY - 60 - 10,
           x = e.clientX - 100;
         post({
           url: '/api/addCard',
@@ -51,6 +50,20 @@ let app = new Vue({
           let pageY = event.clientY - this.moveInfo.position.y - 60;
           let width = window.innerWidth - el.offsetWidth,
             height = window.innerHeight - el.offsetHeight;
+          if(event.target.className === 'content') {
+            pageY -= 42
+            pageX -= 2
+          }
+
+          if(event.target.className === 'clone') {
+            return
+          }
+
+          if(event.target.className === 'input') {
+            pageX -= 18
+            pageY -= 2
+          }
+
           if (pageY <= 0) {
             pageY = 0;
           }
@@ -69,16 +82,34 @@ let app = new Vue({
           // this.save();
         }
       },
-      mu: function () {
+      mu: function (e) {
+        e.stopPropagation();
         this.moveInfo.state = false;
-        document.onmousemove = document.onmouseup = null;
       },
       save: function (i) {
-        console.log(this.note[i])
+        post({
+          url: '/api/setCard',
+          body: {
+            id: this.note[i].id,
+            title: this.note[i].title,
+            content: this.note[i].content,
+            y: this.note[i].y,
+            x: this.note[i].x,
+          }
+        })
       },
       clone: function (i) {
-        this.note.splice(i, 1);
-        this.save();
+        post({
+          url: '/api/delCard',
+          body: {
+            id: this.note[i].id,
+          }
+        })
+          .then(() => {
+            this.fetch()
+          })
+        // this.note.splice(i, 1);
+        // this.save();
       },
       fetch() {
         post({
@@ -103,8 +134,33 @@ let app = new Vue({
       //     }
       // }).bind(this);
       this.fetch()
-      document.addEventListener('mousemove', this.mv)
+      document.addEventListener('mousemove', this.mv);
       document.addEventListener('mouseup', this.mu)
     }
   }
 )
+
+function randomColor(){
+  let r = Math.floor(Math.random()*256);
+  let g = Math.floor(Math.random()*256);
+  let b = Math.floor(Math.random()*256);
+
+  if(r < 16){
+    r = "0"+r.toString(16);
+  }else{
+    r = r.toString(16);
+  }
+
+  if(g < 16){
+    g = "0"+g.toString(16);
+  }else{
+    g = g.toString(16);
+  }
+
+  if(b < 16){
+    b = "0"+b.toString(16);
+  }else{
+    b = b.toString(16);
+  }
+  return "#"+r+g+b;
+}

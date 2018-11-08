@@ -42,10 +42,9 @@
     <div :class="`note ${i == moveInfo.index?'active':''}`" v-for="(v,i) in note"
          :style="{top: v.y+'px',left: v.x+'px',borderColor: v.color}"
          :key="v.id"
-         @mousedown.stop="md(i,$event)"
-    >
+         @mousedown.stop="md(i,$event)">
         <h3 class="title" :style="{background:v.color}">
-            <input type="text" v-model="v.title" @blur="save(i)">
+            <input type="text" v-model="v.title" @blur="save(i)" class="input">
         </h3>
         <div class="clone" @click="clone(i)">X</div>
         <textarea class="content" contenteditable="true"  @blur="save(i)" v-model="v.content"></textarea>
