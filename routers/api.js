@@ -6,10 +6,6 @@
 const router = require("koa-router")();
 const {query} = require('../mysql');
 
-router.post('/', async (ctx, next) => {
-  await ctx.jsend({a: 111,})
-});
-
 router.post('/getList', async (ctx, next) => {
   const result = await query('SELECT * FROM memo WHERE isDelete=0 LIMIT 0, 20')
   await ctx.jsend(result, '')
@@ -23,6 +19,7 @@ router.post('/addCard', async (ctx, next) => {
 
 router.post('/setCard', async (ctx, next) => {
   const body = ctx.body;
+  console.log(ctx.cookies.get('JSESSIONID'))
   await query('UPDATE memo SET title=?, content=?,y=?,x=? WHERE id=?', [body.title, body.content, body.y, body.x, body.id]);
   await ctx.jsend(null, '修改成功')
 })

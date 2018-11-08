@@ -15,37 +15,31 @@ const port = 4050
 
 const server = http.createServer(app.callback())
 
-app.use(convert.compose(
-    koaBody({ multipart: true }),
-    bodyParser,
-    json(),
-    logger(),
-    cors(),
-))
-
-
-app.use(async function(ctx, next) {
-    ctx.json = function (data) {
-        this.body = data;
-    };
-    ctx.jsend = function (data = null, msg = null, ...attach) {
-        this.json({code: 1000, data: data, msg: msg, ...attach})
-    };
-    if(typeof ctx.request.body === 'string'){
-      ctx.body = JSON.parse(ctx.request.body);
-    }
-    await next()
-})
-
-app.use(views(__dirname + '/',{extension: 'html'}))
-app.use(router.routes()).use(router.allowedMethods())
-app.use(statics(path.join( __dirname,  '/')))
+app.use(koaBody({multipart: true}))
+app.use(bodyParser)
+app.use(json())
+app.use(convert(cors()))
 app.use(logger())
 
-app.on("error", (err, ctx) => {
-	log.error('server error', err, ctx)
+app.use(async function (ctx, next) {
+  ctx.json = function (data) {
+    this.body = data;
+  };
+  ctx.jsend = function (data = null, msg = null, ...attach) {
+    this.json({code: 1000, data: data, msg: msg, ...attach})
+  };
+  ctx.body = ctx.request.body;
+  await next()
 })
 
-server.listen(port, () =>{
-    console.log(`http://localhost:${port}`)
+app.use(views(__dirname + '/', {extension: 'html'}))
+app.use(router.routes()).use(router.allowedMethods())
+app.use(statics(path.join(__dirname, '/')))
+
+app.on("error", (err, ctx) => {
+  console.error('server error', err, ctx)
+})
+
+server.listen(port, () => {
+  console.log(`http://localhost:${port}`)
 })

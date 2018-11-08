@@ -4,6 +4,9 @@
 function post(option) {
   return fetch(option.url, {
     method: 'POST',
+    headers:{
+      'content-type':'application/json'
+    },
     body: JSON.stringify(option.body),
   })
     .then(data => {
