@@ -21,6 +21,24 @@ app.use(json())
 app.use(convert(cors()))
 app.use(logger())
 
+app.use(async (ctx, next) => {
+  console.log('中间件1')
+  await next()
+  console.log('中间件1.1')
+})
+
+app.use(async (ctx, next) => {
+  console.log('中间件2')
+  await next()
+  console.log('中间件2.2')
+})
+
+app.use(async (ctx, next) => {
+  console.log('中间件3')
+  await next()
+  console.log('中间件3.3')
+})
+
 app.use(async function (ctx, next) {
   ctx.json = function (data) {
     this.body = data;
@@ -35,6 +53,7 @@ app.use(async function (ctx, next) {
 app.use(views(__dirname + '/', {extension: 'html'}))
 app.use(router.routes()).use(router.allowedMethods())
 app.use(statics(path.join(__dirname, '/')))
+
 
 app.on("error", (err, ctx) => {
   console.error('server error', err, ctx)

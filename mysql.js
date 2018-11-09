@@ -24,7 +24,7 @@ let query = function (sql, values) {
         connection.query(sql, values, (err, rows) => {
           connection.release()
           if (err) {
-            return reject(err)
+            reject(err)
           }
           resolve(rows)
         })
